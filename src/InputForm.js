@@ -3,7 +3,7 @@ import date, { today, tomorrow, yesterday } from "./date.js";
 function InputForm(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [authenticated, setAuthenticated] = React.useState(false);
+  const [authenticated, setAuthenticated] = React.useState(0);
 
   const handleUsernameChange = e => {
     setUsername(e.target.value);
@@ -18,22 +18,21 @@ function InputForm(props) {
 
   const handleauthentication = () => {
     if (
-      (username === "today" && password === today ) ||
+      (username === "today" && password === today) ||
       (username === "tomorrow" && password === tomorrow) ||
       (username === "yestoday" && password === yesterday)
     ) {
-      setAuthenticated(true);
-    } else setAuthenticated(false);
-    
+      setAuthenticated(1);
+    } else setAuthenticated(2);
   };
 
   const handleLogout = () => {
-    setAuthenticated(false);
+    setAuthenticated(0);
     setUsername("");
     setPassword("");
   };
 
-  if (authenticated) {
+  if (authenticated === 1) {
     return (
       <div>
         <h1>wlecome back</h1>
@@ -67,6 +66,11 @@ function InputForm(props) {
       <button className="btn" onClick={handleauthentication}>
         login
       </button>
+      <p>
+        {authenticated === 2
+          ? "Invalid Username or Password. Please try again."
+          : ""}
+      </p>
     </div>
   );
 }
