@@ -1,0 +1,7 @@
+.contanier{
+    border: 5px solid black;
+    width: 400px;
+    height: 400px;
+    margin: 50px auto;
+    position: relative;
+}

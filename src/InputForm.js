@@ -1,29 +1,32 @@
 import React from "react";
-import date, { today, tomorrow, yesterday } from "./date.js";
+import { today, tomorrow, yesterday } from "./date.js";
+import Logout from "./Logout.js"
+import './App.css'
+
 function InputForm(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [authenticated, setAuthenticated] = React.useState(0);
+  const [authenticated, setAuthenticated] = React.useState(false);
+  const [isVaild, setIsvaild] = React.useState(true);
 
   const handleUsernameChange = e => {
     setUsername(e.target.value);
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
-  };
-  const handlePasswordChange = e => {
-    setPassword(e.target.value);
-  };
-
-  const handleauthentication = () => {
     if (
       (username === "today" && password === today) ||
       (username === "tomorrow" && password === tomorrow) ||
       (username === "yestoday" && password === yesterday)
     ) {
-      setAuthenticated(1);
-    } else setAuthenticated(2);
+      setAuthenticated(true);
+    } else {
+      setIsvaild(false);
+    }
+    e.preventDefault();
+  };
+  const handlePasswordChange = e => {
+    setPassword(e.target.value);
   };
 
   const handleLogout = () => {
@@ -32,18 +35,18 @@ function InputForm(props) {
     setPassword("");
   };
 
-  if (authenticated === 1) {
+  if (authenticated) {
     return (
       <div>
-        <h1>wlecome back</h1>
-        <button onClick={handleLogout}>logout</button>
+          <Logout handleLogout = {handleLogout}/>
       </div>
     );
   }
   return (
-    <div>
+    <div className = "contanier">
       <h1>please login</h1>
       <form className="form" onSubmit={handleSubmit}>
+        <div>
         <label>
           username
           <input
@@ -53,24 +56,25 @@ function InputForm(props) {
             onChange={handleUsernameChange}
           />
         </label>
+        </div>
+        <div>
         <label>
           password
           <input
             className="input"
-            type="text"
+            type="password"
             value={password}
             onChange={handlePasswordChange}
           />
         </label>
+        </div>
       </form>
-      <button className="btn" onClick={handleauthentication}>
+      <div>
+      <button className="btn" onClick={handleSubmit}>
         login
       </button>
-      <p>
-        {authenticated === 2
-          ? "Invalid Username or Password. Please try again."
-          : ""}
-      </p>
+      </div>
+      <p>{isVaild ? "" : "Invalid Username or Password. Please try again."}</p>
     </div>
   );
 }
